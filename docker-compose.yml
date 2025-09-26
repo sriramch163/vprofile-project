@@ -2,22 +2,28 @@ services:
   vprodb:
     build:
       context: ./Docker-files/db
-    image: vprocontainers/vprofiledb
+    image: sriram084/vprofiledb
     container_name: vprodb
     ports:
       - "3306:3306"
     volumes:
       - vprodbdata:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=vprodbpass
+      - MYSQL_ROOT_PASSWORD=vprofiledb
 
   vprocache01:
-    image: memcached
+    build:
+      context: ./Docker-files/mc
+    image: sriram084/vprofilemc
+    container_name: vpromc
     ports:
       - "11211:11211"
 
   vpromq01:
-    image: rabbitmq
+    build:
+      context: ./Docker-files/rmq
+    image: sriram084/vprofilermq
+    container_name: vprormq
     ports:
       - "5672:5672"
     environment:
@@ -27,7 +33,7 @@ services:
   vproapp:
     build:
       context: ./Docker-files/app
-    image: vprocontainers/vprofileapp
+    image: sriram084/vprofileapp
     container_name: vproapp
     ports:
       - "8080:8080"
@@ -37,7 +43,7 @@ services:
   vproweb:
     build:
       context: ./Docker-files/web
-    image: vprocontainers/vprofileweb
+    image: sriram084/vprofileweb
     container_name: vproweb
     ports:
       - "80:80"
